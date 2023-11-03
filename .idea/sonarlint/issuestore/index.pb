@@ -17,7 +17,5 @@ Z
 *src/test/java/pageobjects/LandingPage.java,b/7/b7e5ca7f7d2beb7859bc9161ce024648e00dca6b
 l
 <src/test/java/stepdefinitions/LandingPageStepDefinition.java,3/3/33c1e711301d013cef62d1ae91a5494dc625fc13
-7
-pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
 X
 (src/test/java/stepdefinitions/Hooks.java,4/a/4a5c45b05914e269c5842067e30e9b643adf01bb

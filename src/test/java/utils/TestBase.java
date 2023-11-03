@@ -3,6 +3,7 @@ package utils;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -24,12 +25,18 @@ public class TestBase {
         String browserMaven = System.getProperty("browser");
         String browserProperties = properties.getProperty("browser");
 
+
         String browser = browserMaven != null ? browserMaven : browserProperties;
 
         if (driver == null) {
+            ChromeOptions options = new ChromeOptions();
+            if (Boolean.parseBoolean(System.getProperty("headless"))) {
+                options.addArguments("--headless");
+                options.addArguments("window-size=1920,1080");
+            }
             if (browser.equalsIgnoreCase("chrome")) {
                 WebDriverManager.chromedriver().clearDriverCache().setup();
-                driver = new ChromeDriver();
+                driver = new ChromeDriver(options);
             }
             if (browser.equalsIgnoreCase("edge")) {
                 driver = new EdgeDriver();
