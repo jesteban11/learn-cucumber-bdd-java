@@ -1,16 +1,22 @@
 package utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.Browser;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -34,7 +40,15 @@ public class TestBase {
                 options.addArguments("--headless");
                 options.addArguments("window-size=1920,1080");
             }
-            if (browser.equalsIgnoreCase("chrome")) {
+            if (browser.equalsIgnoreCase("chrome") && System.getProperty("runmode").equalsIgnoreCase("remote")) {
+                MutableCapabilities capabilities = new MutableCapabilities();
+                options.addArguments("--no-sandbox");
+                options.addArguments("--disable-dev-shm-usage");
+                capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+                capabilities.setCapability(CapabilityType.BROWSER_NAME, "chrome");
+                driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), capabilities);
+            }
+            if (browser.equalsIgnoreCase("chrome") && System.getProperty("runmode").equalsIgnoreCase("local")) {
                 //WebDriverManager.chromedriver().clearDriverCache().setup();
                 driver = new ChromeDriver(options);
             }
