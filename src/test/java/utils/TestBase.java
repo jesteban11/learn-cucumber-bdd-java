@@ -46,7 +46,7 @@ public class TestBase {
                 options.addArguments("--disable-dev-shm-usage");
                 capabilities.setCapability(ChromeOptions.CAPABILITY, options);
                 capabilities.setCapability(CapabilityType.BROWSER_NAME, "chrome");
-                driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), capabilities);
+                driver = new RemoteWebDriver(new URL("http://172.17.0.3:4444/wd/hub"), capabilities);
             }
             if (browser.equalsIgnoreCase("chrome") && System.getProperty("runmode").equalsIgnoreCase("local")) {
                 //WebDriverManager.chromedriver().clearDriverCache().setup();
