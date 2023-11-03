@@ -35,7 +35,7 @@ public class TestBase {
                 options.addArguments("window-size=1920,1080");
             }
             if (browser.equalsIgnoreCase("chrome")) {
-                WebDriverManager.chromedriver().clearDriverCache().setup();
+                //WebDriverManager.chromedriver().clearDriverCache().setup();
                 driver = new ChromeDriver(options);
             }
             if (browser.equalsIgnoreCase("edge")) {
