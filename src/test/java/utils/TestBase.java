@@ -36,17 +36,17 @@ public class TestBase {
 
         if (driver == null) {
             ChromeOptions options = new ChromeOptions();
+            MutableCapabilities capabilities = new MutableCapabilities();
             if (Boolean.parseBoolean(System.getProperty("headless"))) {
                 options.addArguments("--headless");
                 options.addArguments("window-size=1920,1080");
             }
             if (browser.equalsIgnoreCase("chrome") && System.getProperty("runmode").equalsIgnoreCase("remote")) {
-                MutableCapabilities capabilities = new MutableCapabilities();
                 options.addArguments("--no-sandbox");
                 options.addArguments("--disable-dev-shm-usage");
                 capabilities.setCapability(ChromeOptions.CAPABILITY, options);
                 capabilities.setCapability(CapabilityType.BROWSER_NAME, "chrome");
-                driver = new RemoteWebDriver(new URL("http://172.17.0.3:4444/wd/hub"), capabilities);
+                driver = new RemoteWebDriver(new URL("http://172.17.0.4:4444/wd/hub"), capabilities);
             }
             if (browser.equalsIgnoreCase("chrome") && System.getProperty("runmode").equalsIgnoreCase("local")) {
                 //WebDriverManager.chromedriver().clearDriverCache().setup();
@@ -55,7 +55,14 @@ public class TestBase {
             if (browser.equalsIgnoreCase("edge")) {
                 driver = new EdgeDriver();
             }
-            if (browser.equalsIgnoreCase("firefox")) {
+            if (browser.equalsIgnoreCase("firefox") && System.getProperty("runmode").equalsIgnoreCase("remote")) {
+                options.addArguments("--no-sandbox");
+                options.addArguments("--disable-dev-shm-usage");
+                capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+                capabilities.setCapability(CapabilityType.BROWSER_NAME, "firefox");
+                driver = new RemoteWebDriver(new URL("http://172.17.0.3:4444/wd/hub"), capabilities);
+            }
+            if (browser.equalsIgnoreCase("firefox") && System.getProperty("runmode").equalsIgnoreCase("local")) {
                 WebDriverManager.firefoxdriver().clearDriverCache().setup();
                 driver = new FirefoxDriver();
             }
