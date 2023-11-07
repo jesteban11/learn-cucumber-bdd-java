@@ -8,4 +8,8 @@
 ```mvn test -Dtest="FailedTestRunner"```
 ### Run in specific browser
 ```mvn test -Dbrowser=firefox```
+### Run locally
+```mvn test -DrunMode=local```
+### Run remote in selenium standalone
+```mvn test -DrunMode=remote```
 

@@ -19,3 +19,5 @@ c
 0src/test/java/features/ProceedToCheckout.feature,a/b/abb2628631d2cea6277b281b8aef3147af16539e
 \
 ,src/test/java/features/SearchProduct.feature,0/b/0b9caf7b9bd8a5a9b9f3a9e6c0f861fb60cb0069
+l
+<src/test/java/stepdefinitions/LandingPageStepDefinition.java,3/3/33c1e711301d013cef62d1ae91a5494dc625fc13

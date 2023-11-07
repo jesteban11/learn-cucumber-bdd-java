@@ -19,3 +19,5 @@ c
 3src/test/java/cucumberoptions/FailedTestRunner.java,9/f/9fa3accc937d157c8bb43fdcc9c1f55a1901ce72
 `
 0src/test/java/features/ProceedToCheckout.feature,a/b/abb2628631d2cea6277b281b8aef3147af16539e
+l
+<src/test/java/stepdefinitions/LandingPageStepDefinition.java,3/3/33c1e711301d013cef62d1ae91a5494dc625fc13
