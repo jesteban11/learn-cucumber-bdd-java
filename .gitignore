@@ -41,5 +41,5 @@ build/
 test-output
 
 ### sonar
-.idea
+.idea/
 
