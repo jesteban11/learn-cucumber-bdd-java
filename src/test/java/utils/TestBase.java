@@ -2,16 +2,12 @@ package utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.Browser;
 import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.FileInputStream;
@@ -30,9 +26,11 @@ public class TestBase {
         String url = properties.getProperty("qaUrl");
         String browserMaven = System.getProperty("browser");
         String browserProperties = properties.getProperty("browser");
-
-
         String browser = browserMaven != null ? browserMaven : browserProperties;
+
+        String runModeMaven = System.getProperty("runMode");
+        String runModeProperties = properties.getProperty("runMode");
+        String runMode = browserMaven != null ? runModeMaven : runModeProperties;
 
         if (driver == null) {
             ChromeOptions options = new ChromeOptions();
@@ -41,14 +39,14 @@ public class TestBase {
                 options.addArguments("--headless");
                 options.addArguments("window-size=1920,1080");
             }
-            if (browser.equalsIgnoreCase("chrome") && System.getProperty("runmode").equalsIgnoreCase("remote")) {
+            if (browser.equalsIgnoreCase("chrome") && runMode.equalsIgnoreCase("remote")) {
                 options.addArguments("--no-sandbox");
                 options.addArguments("--disable-dev-shm-usage");
                 capabilities.setCapability(ChromeOptions.CAPABILITY, options);
                 capabilities.setCapability(CapabilityType.BROWSER_NAME, "chrome");
                 driver = new RemoteWebDriver(new URL("http://172.17.0.4:4444/wd/hub"), capabilities);
             }
-            if (browser.equalsIgnoreCase("chrome") && System.getProperty("runmode").equalsIgnoreCase("local")) {
+            if (browser.equalsIgnoreCase("chrome") && runMode.equalsIgnoreCase("local")) {
                 //WebDriverManager.chromedriver().clearDriverCache().setup();
                 driver = new ChromeDriver(options);
             }

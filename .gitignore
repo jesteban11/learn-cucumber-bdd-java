@@ -39,3 +39,7 @@ build/
 
 ### test-output ###
 test-output
+
+### sonar
+.idea
+
