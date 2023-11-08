@@ -1,18 +1,12 @@
 package utils;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import utils.browsers.ChromeBrowser;
+import utils.browsers.FirefoxBrowser;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -30,39 +24,30 @@ public class TestBase {
 
         String runModeMaven = System.getProperty("runMode");
         String runModeProperties = properties.getProperty("runMode");
-        String runMode = browserMaven != null ? runModeMaven : runModeProperties;
+        String runMode = runModeMaven != null ? runModeMaven : runModeProperties;
 
         if (driver == null) {
-            ChromeOptions options = new ChromeOptions();
-            MutableCapabilities capabilities = new MutableCapabilities();
-            if (Boolean.parseBoolean(System.getProperty("headless"))) {
-                options.addArguments("--headless");
-                options.addArguments("window-size=1920,1080");
+            ChromeBrowser chromeBrowser = new ChromeBrowser();
+            FirefoxBrowser firefoxBrowser = new FirefoxBrowser();
+
+            if (browser.equalsIgnoreCase("chrome")) {
+                if (Boolean.parseBoolean(System.getProperty("headless")))
+                    chromeBrowser.setHeadless();
+                if (runMode.equalsIgnoreCase("remote"))
+                    driver = chromeBrowser.getRemoteDriver();
+                if (runMode.equalsIgnoreCase("local"))
+                    driver = chromeBrowser.getLocalDriver();
             }
-            if (browser.equalsIgnoreCase("chrome") && runMode.equalsIgnoreCase("remote")) {
-                options.addArguments("--no-sandbox");
-                options.addArguments("--disable-dev-shm-usage");
-                capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-                capabilities.setCapability(CapabilityType.BROWSER_NAME, "chrome");
-                driver = new RemoteWebDriver(new URL("http://172.17.0.4:4444/wd/hub"), capabilities);
-            }
-            if (browser.equalsIgnoreCase("chrome") && runMode.equalsIgnoreCase("local")) {
-                //WebDriverManager.chromedriver().clearDriverCache().setup();
-                driver = new ChromeDriver(options);
+            if (browser.equalsIgnoreCase("firefox")) {
+                if (Boolean.parseBoolean(System.getProperty("headless")))
+                    firefoxBrowser.setHeadless();
+                if (runMode.equalsIgnoreCase("remote"))
+                    driver = firefoxBrowser.getRemoteDriver();
+                if (runMode.equalsIgnoreCase("local"))
+                    driver = firefoxBrowser.getLocalDriver();
             }
             if (browser.equalsIgnoreCase("edge")) {
                 driver = new EdgeDriver();
-            }
-            if (browser.equalsIgnoreCase("firefox") && runMode.equalsIgnoreCase("remote")) {
-                options.addArguments("--no-sandbox");
-                options.addArguments("--disable-dev-shm-usage");
-                capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-                capabilities.setCapability(CapabilityType.BROWSER_NAME, "firefox");
-                driver = new RemoteWebDriver(new URL("http://172.17.0.3:4444/wd/hub"), capabilities);
-            }
-            if (browser.equalsIgnoreCase("firefox") && runMode.equalsIgnoreCase("local")) {
-                WebDriverManager.firefoxdriver().clearDriverCache().setup();
-                driver = new FirefoxDriver();
             }
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
             driver.get(url);
