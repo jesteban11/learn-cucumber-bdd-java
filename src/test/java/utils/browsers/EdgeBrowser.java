@@ -11,7 +11,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class EdgeBrowser {
+public class EdgeBrowser implements BrowserManager {
     EdgeOptions options;
     MutableCapabilities capabilities;
 

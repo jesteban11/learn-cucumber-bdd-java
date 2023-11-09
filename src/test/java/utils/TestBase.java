@@ -2,6 +2,8 @@ package utils;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.remote.Browser;
+import utils.browsers.BrowserManager;
 import utils.browsers.ChromeBrowser;
 import utils.browsers.EdgeBrowser;
 import utils.browsers.FirefoxBrowser;
@@ -28,36 +30,32 @@ public class TestBase {
         String runMode = runModeMaven != null ? runModeMaven : runModeProperties;
 
         if (driver == null) {
-            if (browser.equalsIgnoreCase("chrome")) {
-                ChromeBrowser chromeBrowser = new ChromeBrowser();
-                if (Boolean.parseBoolean(System.getProperty("headless")))
-                    chromeBrowser.setHeadless();
-                if (runMode.equalsIgnoreCase("remote"))
-                    driver = chromeBrowser.getRemoteDriver();
-                if (runMode.equalsIgnoreCase("local"))
-                    driver = chromeBrowser.getLocalDriver();
+            BrowserManager browserManager = getBrowserFactory(browser);
+            if (Boolean.parseBoolean(System.getProperty("headless"))) {
+                browserManager.setHeadless();
             }
-            if (browser.equalsIgnoreCase("firefox")) {
-                FirefoxBrowser firefoxBrowser = new FirefoxBrowser();
-                if (Boolean.parseBoolean(System.getProperty("headless")))
-                    firefoxBrowser.setHeadless();
-                if (runMode.equalsIgnoreCase("remote"))
-                    driver = firefoxBrowser.getRemoteDriver();
-                if (runMode.equalsIgnoreCase("local"))
-                    driver = firefoxBrowser.getLocalDriver();
+            if (runMode.equalsIgnoreCase("remote")) {
+                driver = browserManager.getRemoteDriver();
             }
-            if (browser.equalsIgnoreCase("edge")) {
-                EdgeBrowser edgeBrowser = new EdgeBrowser();
-                if (Boolean.parseBoolean(System.getProperty("headless")))
-                    edgeBrowser.setHeadless();
-                if (runMode.equalsIgnoreCase("remote"))
-                    driver = edgeBrowser.getRemoteDriver();
-                if (runMode.equalsIgnoreCase("local"))
-                    driver = edgeBrowser.getLocalDriver();
+            if (runMode.equalsIgnoreCase("local")) {
+                driver = browserManager.getLocalDriver();
             }
+
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
             driver.get(url);
         }
         return driver;
+    }
+    private BrowserManager getBrowserFactory(String browser) {
+        switch (browser.toLowerCase()) {
+            case "chrome":
+                return new ChromeBrowser();
+            case "firefox":
+                return new FirefoxBrowser();
+            case "edge":
+                return new EdgeBrowser();
+            default:
+                throw new IllegalArgumentException("Unsupported browser: " + browser);
+        }
     }
 }
