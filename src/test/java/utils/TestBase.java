@@ -1,10 +1,7 @@
 package utils;
 
 import org.openqa.selenium.WebDriver;
-import utils.browsers.BrowserManager;
-import utils.browsers.ChromeBrowser;
-import utils.browsers.EdgeBrowser;
-import utils.browsers.FirefoxBrowser;
+import utils.browsers.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,7 +25,7 @@ public class TestBase {
         String runMode = runModeMaven != null ? runModeMaven : runModeProperties;
 
         if (driver == null) {
-            BrowserManager browserManager = getBrowserDriver(browser);
+            DriverManager browserManager = DriverManagerFactory.getInstance().getBrowserDriver(browser);
             if (Boolean.parseBoolean(System.getProperty("headless"))) {
                 browserManager.setHeadless();
             }
@@ -38,23 +35,10 @@ public class TestBase {
             if (runMode.equalsIgnoreCase("local")) {
                 driver = browserManager.getLocalDriver();
             }
-
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
             driver.get(url);
         }
         return driver;
     }
 
-    private BrowserManager getBrowserDriver(String browser) {
-        switch (browser.toLowerCase()) {
-            case "chrome":
-                return new ChromeBrowser();
-            case "firefox":
-                return new FirefoxBrowser();
-            case "edge":
-                return new EdgeBrowser();
-            default:
-                throw new IllegalArgumentException("Unsupported browser: " + browser);
-        }
-    }
 }

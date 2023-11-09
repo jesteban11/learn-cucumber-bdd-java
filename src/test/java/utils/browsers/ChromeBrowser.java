@@ -11,7 +11,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ChromeBrowser implements BrowserManager {
+public class ChromeBrowser implements DriverManager {
     ChromeOptions options;
     MutableCapabilities capabilities;
 
