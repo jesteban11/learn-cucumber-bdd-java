@@ -2,9 +2,9 @@ package utils.browsers;
 
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.Browser;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -20,19 +20,19 @@ public class FirefoxBrowser {
         capabilities = new MutableCapabilities();
     }
 
-    public void setRemoteOptions(){
+    public void setRemoteOptions() {
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
     }
 
     public WebDriver getRemoteDriver() throws MalformedURLException {
         setRemoteOptions();
-        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, "firefox");
-        return new RemoteWebDriver(new URL("http://172.18.0.2:4444/wd/hub"), capabilities);
+        capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
+        capabilities.setCapability(CapabilityType.BROWSER_NAME, Browser.FIREFOX.browserName());
+        return new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), capabilities);
     }
 
-    public WebDriver getLocalDriver(){
+    public WebDriver getLocalDriver() {
         return new FirefoxDriver(options);
     }
 

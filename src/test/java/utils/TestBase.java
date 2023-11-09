@@ -3,6 +3,7 @@ package utils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import utils.browsers.ChromeBrowser;
+import utils.browsers.EdgeBrowser;
 import utils.browsers.FirefoxBrowser;
 
 import java.io.FileInputStream;
@@ -27,10 +28,8 @@ public class TestBase {
         String runMode = runModeMaven != null ? runModeMaven : runModeProperties;
 
         if (driver == null) {
-            ChromeBrowser chromeBrowser = new ChromeBrowser();
-            FirefoxBrowser firefoxBrowser = new FirefoxBrowser();
-
             if (browser.equalsIgnoreCase("chrome")) {
+                ChromeBrowser chromeBrowser = new ChromeBrowser();
                 if (Boolean.parseBoolean(System.getProperty("headless")))
                     chromeBrowser.setHeadless();
                 if (runMode.equalsIgnoreCase("remote"))
@@ -39,6 +38,7 @@ public class TestBase {
                     driver = chromeBrowser.getLocalDriver();
             }
             if (browser.equalsIgnoreCase("firefox")) {
+                FirefoxBrowser firefoxBrowser = new FirefoxBrowser();
                 if (Boolean.parseBoolean(System.getProperty("headless")))
                     firefoxBrowser.setHeadless();
                 if (runMode.equalsIgnoreCase("remote"))
@@ -47,7 +47,13 @@ public class TestBase {
                     driver = firefoxBrowser.getLocalDriver();
             }
             if (browser.equalsIgnoreCase("edge")) {
-                driver = new EdgeDriver();
+                EdgeBrowser edgeBrowser = new EdgeBrowser();
+                if (Boolean.parseBoolean(System.getProperty("headless")))
+                    edgeBrowser.setHeadless();
+                if (runMode.equalsIgnoreCase("remote"))
+                    driver = edgeBrowser.getRemoteDriver();
+                if (runMode.equalsIgnoreCase("local"))
+                    driver = edgeBrowser.getLocalDriver();
             }
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
             driver.get(url);
