@@ -37,6 +37,6 @@ public class ChromeBrowser {
         setRemoteOptions();
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
         capabilities.setCapability(CapabilityType.BROWSER_NAME, "chrome");
-        return new RemoteWebDriver(new URL("http://172.17.0.4:4444/wd/hub"), capabilities);
+        return new RemoteWebDriver(new URL("http://172.18.0.2:4444/wd/hub"), capabilities);
     }
 }
