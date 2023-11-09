@@ -1,8 +1,6 @@
 package utils;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.remote.Browser;
 import utils.browsers.BrowserManager;
 import utils.browsers.ChromeBrowser;
 import utils.browsers.EdgeBrowser;
@@ -30,7 +28,7 @@ public class TestBase {
         String runMode = runModeMaven != null ? runModeMaven : runModeProperties;
 
         if (driver == null) {
-            BrowserManager browserManager = getBrowserFactory(browser);
+            BrowserManager browserManager = getBrowserDriver(browser);
             if (Boolean.parseBoolean(System.getProperty("headless"))) {
                 browserManager.setHeadless();
             }
@@ -46,7 +44,8 @@ public class TestBase {
         }
         return driver;
     }
-    private BrowserManager getBrowserFactory(String browser) {
+
+    private BrowserManager getBrowserDriver(String browser) {
         switch (browser.toLowerCase()) {
             case "chrome":
                 return new ChromeBrowser();
