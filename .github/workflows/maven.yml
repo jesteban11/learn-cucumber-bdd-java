@@ -31,7 +31,7 @@ jobs:
       run: docker compose -f docker-compose.yml up -d --build
       
     - name: Build with Maven
-      run: mvn clean test -Dcucumber.filter.tags="@PlaceOrder" -DrunMode=remote -Dheadless=false
+      run: mvn clean test -DrunMode=remote -Dheadless=false
 
     - name: Copy test-output to artifacts
       if: ${{ failure() }}
